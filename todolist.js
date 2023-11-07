@@ -1,87 +1,62 @@
-
-// Fungsi untuk menambahkan tugas
-function addTask() {
-    const taskInput = document.getElementById("task");
+document.addEventListener("DOMContentLoaded", function () {
+    const taskInput = document.getElementById("taskInput");
+    const addTaskButton = document.getElementById("addTask");
     const taskList = document.getElementById("taskList");
 
-    if (taskInput.value !== "") {
-      // Buat objek tugas
-      const task = {
-        text: taskInput.value,
-        id: Date.now(),
-      };
+    // Load tasks from local storage on page load
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-      // Simpan tugas dalam Local Storage
-      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-      tasks.push(task);
+    function saveTasks() {
       localStorage.setItem("tasks", JSON.stringify(tasks));
-
-      // Tambahkan tugas ke daftar tugas
-      taskList.appendChild(createTaskElement(task));
-
-      // Reset input
-      taskInput.value = "";
     }
-  }
 
-  // Fungsi untuk membuat elemen tugas dengan tombol edit dan hapus
-  function createTaskElement(task) {
-    const taskItem = document.createElement("li");
-    taskItem.textContent = task.text;
-    taskItem.id = task;
+    function renderTasks() {
+      taskList.innerHTML = "";
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            ${task}
+            <button class="edit" data-index="${index}">Edit</button>
+            <button class="delete" data-index="${index}">Hapus</button>
+        `;
+        taskList.appendChild(li);
+      });
 
-    // Tombol Edit
-    const editButton = document.createElement("button");
-    editButton.textContent = "Edit";
-    editButton.onclick = function () {
-      const taskItem = document.getElementById(task); // Temukan elemen tugas berdasarkan ID
-      const updatedText = prompt("Edit tugas:", task.text);
-      if (updatedText !== null) {
-        task.text = updatedText;
-        taskItem.textContent = updatedText; // Ubah teks elemen tugas
-        location.reload();
-        updateTaskInLocalStorage(task);
+      const editButtons = document.querySelectorAll("button.edit");
+      editButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const index = e.target.getAttribute("data-index");
+          const taskText = tasks[index];
+          const editedTask = prompt("Edit tugas:", taskText);
+          if (editedTask !== null) {
+            tasks[index] = editedTask;
+            saveTasks();
+            renderTasks();
+          }
+        });
+      });
+
+      // Attach click event to delete buttons
+      const deleteButtons = document.querySelectorAll("button.delete");
+      deleteButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const index = e.target.getAttribute("data-index");
+          tasks.splice(index, 1);
+          saveTasks();
+          renderTasks();
+        });
+      });
+    }
+
+    renderTasks();
+
+    addTaskButton.addEventListener("click", function () {
+      const taskText = taskInput.value.trim();
+      if (taskText !== "") {
+        tasks.push(taskText);
+        saveTasks();
+        renderTasks();
+        taskInput.value = "";
       }
-    };
-    // Tombol Hapus
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Hapus";
-    deleteButton.onclick = function () {
-      const taskItem = document.getElementById(task);
-
-      taskItem.remove();
-      deleteTaskFromLocalStorage(task);
-    };
-
-    taskItem.appendChild(editButton);
-    taskItem.appendChild(deleteButton);
-
-    return taskItem;
-  }
-
-  // Fungsi untuk mengupdate tugas di Local Storage
-  function updateTaskInLocalStorage(task) {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const taskIndex = tasks.findIndex((t) => t.id === task.id);
-    if (taskIndex !== -1) {
-      tasks[taskIndex] = task;
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
-  }
-
-  // Fungsi untuk menghapus tugas dari Local Storage
-  function deleteTaskFromLocalStorage(task) {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const updatedTasks = tasks.filter((t) => t.id !== task.id);
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const taskList = document.getElementById("taskList");
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-    tasks.forEach(function (task) {
-      const taskItem = createTaskElement(task);
-      taskList.appendChild(taskItem);
     });
   });
