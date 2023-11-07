@@ -1,52 +1,31 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: rgb(255, 255, 255);
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+html{
+    background-image: url(todoapp\ wallpaper.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Pixelify Sans', sans-serif;
 }
 
-.container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid blue;
-    border-radius: 5px;
-    background-color: rgb(255, 255, 255);
-    box-shadow: 0 0 10px rgb(46, 46, 255);
-}
-
-h1 {
+main{
+    color: white;
+    position: relative;
+    max-width: 600px;
+    margin: 5px auto;
+    height: auto;
+    padding: 5px;
     text-align: center;
-    color: rgb(0, 0, 0);
+    border-radius: 10px;
+    border: 1px solid white;
+    box-shadow: 0px 2px 3px white;
 }
 
-.input-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-input[type="text"] {
-    flex-grow: 1;
-    padding: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: rgb(0, 0, 206);
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-button:before{
-    width: 2px;
-    height: 0%;
-}
-button:hover {
-    background-color: blue;
-    box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
-              -4px -4px 6px 0 rgba(116, 125, 136, .5), 
-    inset -4px -4px 6px 0 rgba(255,255,255,.2),
-    inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+.inputheader input {
+    border: solid rgb(255, 0, 0) 1px;
+    border-radius: 15px 0px 0px 15px;
+    padding: 10px 50px;
+    box-shadow: 0px 0px 8px 0px rgb(255, 0, 0);
+    margin-right: 2px;
 }
 
 ul {
@@ -55,13 +34,10 @@ ul {
 }
 
 li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: rgb(0, 0, 0);
+    color: white;
     margin: 10px 0;
     padding: 10px;
-    border: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     border-radius: 5px;
 }
 
@@ -71,7 +47,19 @@ li button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin: 1px 5px;
 }
 li button:hover {
     background-color: red;
+}
+
+button{
+    border: none;
+    border-radius: 0px 15px 15px 0px;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 8px 0px black;
+}
+
+button:hover{
+    background-color: azure;
 }
